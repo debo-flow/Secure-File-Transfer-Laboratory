@@ -15,3 +15,11 @@ class FileValidationError(SecureFileLabError):
 class PathTraversalError(FileValidationError):
     """Raised when an attempted path traversal is detected."""
     pass
+
+class ArchiveInspectionError(FileValidationError):
+    """Raised when an archive exceeds limits or is malformed."""
+    pass
+
+class SignatureDetectionError(FileValidationError):
+    """Raised during magic bytes or structural parsing failures."""
+    pass
