@@ -21,25 +21,33 @@ class IntegrityConfig:
     
     def __post_init__(self):
         self.baseline_dir.mkdir(parents=True, exist_ok=True)
-        if os.name == "posix":
-            self.baseline_dir.chmod(0o700)
+        if os.name == "posix": self.baseline_dir.chmod(0o700)
 
 @dataclass
 class IdentityConfig:
-    """Configurations for M4 File Fingerprinting and Manifest Management."""
-    manifest_schema_version: str = "1.0.0"
+    manifest_schema_version: str = "1.1.0"
     manifest_dir: Path = field(default_factory=lambda: Path("manifests"))
     
     def __post_init__(self):
         self.manifest_dir.mkdir(parents=True, exist_ok=True)
-        if os.name == "posix":
-            self.manifest_dir.chmod(0o700)
+        if os.name == "posix": self.manifest_dir.chmod(0o700)
+
+@dataclass
+class PKIConfig:
+    """Configurations for M5 Public Key Infrastructure and Signatures."""
+    pki_dir: Path = field(default_factory=lambda: Path("pki"))
+    key_directory_file: str = "trusted_keys.json"
+    audit_log_file: str = "signature_audit.jsonl"
+    
+    def __post_init__(self):
+        self.pki_dir.mkdir(parents=True, exist_ok=True)
+        if os.name == "posix": self.pki_dir.chmod(0o700)
 
 @dataclass
 class SecurityConfig:
     max_file_size_mb: int = 50
     allowed_extensions: Set[str] = field(default_factory=lambda: {
-        ".txt", ".pdf", ".csv", ".json", ".png", ".jpg", ".jpeg", ".zip"
+        ".txt", ".pdf", ".csv", ".json", ".png", ".jpg", ".jpeg", ".zip", ".pem"
     })
     temp_storage_dir: Path = field(default_factory=lambda: Path("temp"))
     log_dir: Path = field(default_factory=lambda: Path("logs"))
@@ -54,12 +62,13 @@ class SecurityConfig:
 @dataclass
 class AppConfig:
     app_name: str = "Secure File Transfer Lab"
-    version: str = "1.3.0-M4"
-    milestone: int = 4
+    version: str = "1.4.0-M5"
+    milestone: int = 5
     security: SecurityConfig = field(default_factory=SecurityConfig)
     archive: ArchiveConfig = field(default_factory=ArchiveConfig)
     inspection: InspectionConfig = field(default_factory=InspectionConfig)
     integrity: IntegrityConfig = field(default_factory=IntegrityConfig)
     identity: IdentityConfig = field(default_factory=IdentityConfig)
+    pki: PKIConfig = field(default_factory=PKIConfig)
 
 CONFIG = AppConfig()
