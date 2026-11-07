@@ -16,14 +16,24 @@ class InspectionConfig:
 
 @dataclass
 class IntegrityConfig:
-    """Configurations for M3 Integrity and Merkle operations."""
-    default_chunk_size_kb: int = 1024  # 1 MB chunks
+    default_chunk_size_kb: int = 1024
     baseline_dir: Path = field(default_factory=lambda: Path("baselines"))
     
     def __post_init__(self):
         self.baseline_dir.mkdir(parents=True, exist_ok=True)
         if os.name == "posix":
             self.baseline_dir.chmod(0o700)
+
+@dataclass
+class IdentityConfig:
+    """Configurations for M4 File Fingerprinting and Manifest Management."""
+    manifest_schema_version: str = "1.0.0"
+    manifest_dir: Path = field(default_factory=lambda: Path("manifests"))
+    
+    def __post_init__(self):
+        self.manifest_dir.mkdir(parents=True, exist_ok=True)
+        if os.name == "posix":
+            self.manifest_dir.chmod(0o700)
 
 @dataclass
 class SecurityConfig:
@@ -44,11 +54,12 @@ class SecurityConfig:
 @dataclass
 class AppConfig:
     app_name: str = "Secure File Transfer Lab"
-    version: str = "1.2.0-M3"
-    milestone: int = 3
+    version: str = "1.3.0-M4"
+    milestone: int = 4
     security: SecurityConfig = field(default_factory=SecurityConfig)
     archive: ArchiveConfig = field(default_factory=ArchiveConfig)
     inspection: InspectionConfig = field(default_factory=InspectionConfig)
     integrity: IntegrityConfig = field(default_factory=IntegrityConfig)
+    identity: IdentityConfig = field(default_factory=IdentityConfig)
 
 CONFIG = AppConfig()
