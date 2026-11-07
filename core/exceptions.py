@@ -19,9 +19,11 @@ class SignatureDetectionError(FileValidationError):
     pass
 
 class BaselineError(SecureFileLabError):
-    """Raised when there is an issue reading or validating a file baseline."""
     pass
 
 class MerkleTreeError(SecureFileLabError):
-    """Raised during Merkle Tree generation or proof validation failures."""
+    pass
+
+class ManifestError(SecureFileLabError):
+    """Raised when a manifest is malformed, invalid, or fails structural verification."""
     pass
